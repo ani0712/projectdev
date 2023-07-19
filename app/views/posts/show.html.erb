@@ -1,0 +1,24 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Content</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @post.title %></td>
+      <td><%= @post.content %></td>
+    </tr>
+
+  </tbody>
+</table>
+
+
+<button type="button" class="btn btn-info"><%= link_to 'Edit', edit_post_path(@post), method: 'get'%></button>
+<button type="button" class="btn btn-info">
+<%= link_to 'Destroy', post_path(@post.id), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"} %>
+</button>
+
