@@ -2,5 +2,13 @@
 <%= form_with model: @post do |f| %>
 <%= f.text_field :title,placeholder:"Enter the title" %><br>
 <%= f.text_field :content,placeholder:"Enter the content" %><br>
+<div>
+  <%= f.label :status %><br>
+  <%= f.select :status, ['public', 'private', 'archived'], selected: 'public' %>
+</div>
+<div class="field">
+  <%= f.label :image %>
+  <%= f.file_field :image%>
+</div>
 <%= f.submit %>
 <% end %>

@@ -3,12 +3,19 @@
     <tr>
       <th scope="col">Title</th>
       <th scope="col">Content</th>
+      <th scope="col">Image</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><%= @post.title %></td>
       <td><%= @post.content %></td>
+      <td>
+        <div style="width:400px; height:auto">
+          <%= link_to image_tag(@post.image, style:'width:100%'), posts_path %>
+          <%= link_to 'Download', @post.image, download: ''%>
+        </div>
+      </td>
     </tr>
 
   </tbody>
@@ -24,6 +31,7 @@
 
 <h2>Comments</h2>
 <% @post.comments.each do |comment| %>
+<% comment.archived? %>
   <p>
     <strong>Commenter:</strong>
     <%= comment.commenter %>
@@ -33,6 +41,15 @@
     <strong>Comment:</strong>
     <%= comment.body %>
   </p>
+  <p>
+    <%= link_to "Edit Comment", edit_post_comment_path(comment.id)%>
+  <p>
+    <%= link_to "Destroy Comment", [comment.post, comment], data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                } %>
+  </p>
+  
 <% end %>
 
 <h2>Add a comment:</h2>
@@ -46,7 +63,13 @@
     <%= form.text_area :body %>
   </p>
   <p>
+    <%= form.label :status %><br>
+    <%= form.select :status, ['public', 'private', 'archived'], selected: 'public' %>
+  </p>
+
+  <p>
     <%= form.submit %>
   </p>
 <% end %>
+
 
