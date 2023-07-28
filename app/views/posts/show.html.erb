@@ -1,24 +1,81 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Title</th>
       <th scope="col">Content</th>
+      <th scope="col">Image</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><%= @post.title %></td>
       <td><%= @post.content %></td>
+      <td>
+        <div style="width:400px; height:auto">
+          <%= link_to image_tag(@post.image, style:'width:100%'), @post.image%>
+          
+          <%= link_to rails_blob_path(@post.image, disposition: "attachment") do %>
+          <%= link_to "View file", @post.image, view:'' %> <br/>
+          <%= link_to "Download file", @post.image, download:'' %>
+          <% end %>
+  
+        </div>
+      </td>
+
+      <td>
+          <button type="button" class="btn btn-info"><%= link_to 'Edit', edit_post_path(@post), method: 'get'%></button>
+      </td>
+      <td><button type="button" class="btn btn-info">
+          <%= link_to 'Destroy', post_path(@post.id), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"} %>
+          </button>
+      </td>
+
     </tr>
 
   </tbody>
 </table>
 
 
-<button type="button" class="btn btn-info"><%= link_to 'Edit', edit_post_path(@post), method: 'get'%></button>
-<button type="button" class="btn btn-info">
-<%= link_to 'Destroy', post_path(@post.id), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"} %>
-</button>
 
+
+<h2>Comments</h2>
+<% @post.comments.each do |comment| %>
+  <p>
+    <strong>Commenter:</strong>
+    <%= comment.commenter %>
+  </p>
+
+  <p>
+    <strong>Comment:</strong>
+    <%= comment.body %>
+  </p>
+
+  <p>
+      <%= link_to "Edit comment" ,edit_post_comment_path(comment.id)%>
+  </p>
+
+  <p>
+    <%= link_to "Destroy Comment", [comment.post, comment], data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                } %>
+  </p>
+<% end %>
+
+<h2>Add a comment:</h2>
+<%= form_with model: [ @post, @post.comments.build ] do |form| %>
+  <p>
+    <%= form.label :commenter %><br>
+    <%= form.text_field :commenter %>
+  </p>
+  <p>
+    <%= form.label :body %><br>
+    <%= form.text_area :body %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>

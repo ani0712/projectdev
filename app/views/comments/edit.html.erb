@@ -1,0 +1,16 @@
+<h2>Edit a comment:</h2>
+<%= form_for @comment, url: post_comment_path, method: :PATCH do |form| %>
+  <p>
+    <%= form.label :commenter %><br>
+    <%= form.text_field :commenter %>
+  </p>
+  <p>
+    <%= form.label :body %><br>
+    <%= form.text_area :body %>
+  </p>
+
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
